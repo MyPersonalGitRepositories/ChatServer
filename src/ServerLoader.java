@@ -39,7 +39,7 @@ public class ServerLoader {
         }
     }
 
-    private static void end() {
+    public static void end() {
         try {
             server.close();
         } catch (IOException e) {

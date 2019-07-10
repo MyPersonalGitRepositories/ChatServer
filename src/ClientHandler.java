@@ -18,6 +18,9 @@ public class ClientHandler extends Thread {
                 DataInputStream dis = new DataInputStream(client.getInputStream());
                 if (dis.available() > 0) {
                     // reading and processing
+                    int var = dis.readInt();
+                    System.out.println(var);
+                    ServerLoader.end();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
