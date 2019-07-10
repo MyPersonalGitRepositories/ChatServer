@@ -8,13 +8,22 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
+
     private final Socket client;
+    private String nickname = "Unidentified";
 
     public ClientHandler(Socket client) {
         this.client = client;
         start();
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     @Override
     public void run() {
@@ -36,8 +45,9 @@ public class ClientHandler extends Thread {
             short id = dis.readShort();
             // read packet
             OPacket packet = PacketManager.getPacked(id);
+            packet.setSocket(client);
             packet.read(dis);
-
+            packet.handle();
         } catch (IOException e) {
             e.printStackTrace();
         }

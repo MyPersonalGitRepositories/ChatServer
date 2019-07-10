@@ -30,4 +30,9 @@ public class PacketAuthorize extends OPacket {
     public void read(DataInputStream dis) throws IOException {
         nickname = dis.readUTF();
     }
+
+    @Override
+    public void handle() {
+
+    }
 }
