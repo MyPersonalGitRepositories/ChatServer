@@ -14,7 +14,6 @@ public class ClientHandler extends Thread {
 
     public ClientHandler(Socket client) {
         this.client = client;
-        start();
     }
 
     public String getNickname() {
@@ -32,7 +31,6 @@ public class ClientHandler extends Thread {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -51,6 +49,10 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void invalidate() {
+        ServerLoader.invalidate(client);
     }
 
 }

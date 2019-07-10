@@ -1,5 +1,7 @@
 package packet;
 
+import chat.ServerLoader;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,6 +35,12 @@ public class PacketAuthorize extends OPacket {
 
     @Override
     public void handle() {
-
+        ServerLoader.getHandler(getSocket()).setNickname(nickname);
+        System.out.println("Our nickname is " + nickname);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        ServerLoader.end();
     }
 }
