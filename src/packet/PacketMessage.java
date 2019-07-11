@@ -39,5 +39,6 @@ public class PacketMessage extends OPacket {
     public void handle() {
         sender = ServerLoader.getHandler(getSocket()).getNickname();
         ServerLoader.handlers.keySet().forEach(s -> ServerLoader.sendPacket(s, this));
+        System.out.println(String.format("[%s]: %s", sender, message));
     }
 }

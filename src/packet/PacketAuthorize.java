@@ -36,6 +36,6 @@ public class PacketAuthorize extends OPacket {
     @Override
     public void handle() {
         ServerLoader.getHandler(getSocket()).setNickname(nickname);
-
+        System.out.println("Authorized new socket with nickname" + nickname);
     }
 }
