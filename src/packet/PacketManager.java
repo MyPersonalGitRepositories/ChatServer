@@ -11,7 +11,7 @@ public class PacketManager {
         packets.put((short) 1, PacketAuthorize.class);
     }
 
-    public static OPacket getPacked(short id) {
+    public static OPacket getPacket(short id) {
         try {
             return packets.get(id).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

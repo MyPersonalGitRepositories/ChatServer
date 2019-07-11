@@ -42,7 +42,7 @@ public class ClientHandler extends Thread {
                 return false;
             short id = dis.readShort();
             // read packet
-            OPacket packet = PacketManager.getPacked(id);
+            OPacket packet = PacketManager.getPacket(id);
             packet.setSocket(client);
             packet.read(dis);
             packet.handle();

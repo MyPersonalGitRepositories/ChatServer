@@ -3,14 +3,15 @@ package chat;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class ServerLoader {
 
     private static ServerSocket server;
-    private static Map<Socket, ClientHandler> handlers = new HashMap<>();
+    private static ServerHandler handler;
+    static Map<Socket, ClientHandler> handlers = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -22,30 +23,42 @@ public class ServerLoader {
 
     private static void start() {
         try {
-            server = new ServerSocket(8080);
+            server = new ServerSocket(8888);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void handle() {
-        // handling of connection of client
+        handler = new ServerHandler(server);
+        handler.start();
+        readChat();
+    }
+
+    private static void readChat() {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            try {
-                Socket client = server.accept();
-                ClientHandler handler = new ClientHandler(client);
-                handler.start();
-                handlers.put(client, handler);
-            } catch (SocketException e) {
-                return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
+            if (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(line);
+                if (line.equals("/end"))
+                    end();
+            } else {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    public static ServerHandler getHandler() {
+        return handler;
+    }
+
+    public static void setHandler(ServerHandler handler) {
+        ServerLoader.handler = handler;
     }
 
     public static void end() {
