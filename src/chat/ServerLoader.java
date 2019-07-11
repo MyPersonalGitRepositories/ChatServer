@@ -1,5 +1,8 @@
 package chat;
 
+import packet.OPacket;
+
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +14,7 @@ public class ServerLoader {
 
     private static ServerSocket server;
     private static ServerHandler handler;
-    static Map<Socket, ClientHandler> handlers = new HashMap<>();
+    public static Map<Socket, ClientHandler> handlers = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -35,14 +38,27 @@ public class ServerLoader {
         readChat();
     }
 
+    public static void sendPacket(Socket receiver, OPacket packet) {
+        try {
+            DataOutputStream dos = new DataOutputStream(receiver.getOutputStream());
+            dos.writeShort(packet.getId());
+            packet.write(dos);
+            dos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void readChat() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                System.out.println(line);
                 if (line.equals("/end"))
                     end();
+                else {
+                    System.out.println("Unknown command");
+                }
             } else {
                 try {
                     Thread.sleep(10);
