@@ -27,19 +27,19 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         while (true) {
-            readDate();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
+            if (!readDate())
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                }
         }
     }
 
-    private void readDate() {
+    private boolean readDate() {
         try {
             DataInputStream dis = new DataInputStream(client.getInputStream());
             if (dis.available() <= 0)
-                return;
+                return false;
             short id = dis.readShort();
             // read packet
             OPacket packet = PacketManager.getPacked(id);
@@ -49,6 +49,7 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     public void invalidate() {
